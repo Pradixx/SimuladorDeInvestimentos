@@ -25,10 +25,10 @@ public abstract class Investimentos {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "valor-inicial")
+    @Column(name = "valor_inicial")
     private double valorInicial;
 
-    @Column(name = "taxa-juros")
+    @Column(name = "taxa_juros")
     private double taxaJuros;
 
     @Column(name = "periodo")
