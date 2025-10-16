@@ -2,6 +2,7 @@ package com.deigo.SimuladorDeInvestimentos.infrastructure.entitys;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -10,7 +11,7 @@ import java.math.RoundingMode;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @DiscriminatorValue("CDB")
 

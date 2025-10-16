@@ -2,6 +2,7 @@ package com.deigo.SimuladorDeInvestimentos.infrastructure.entitys;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "investimentos")
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
