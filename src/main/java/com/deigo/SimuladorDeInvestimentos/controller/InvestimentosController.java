@@ -1,6 +1,7 @@
 package com.deigo.SimuladorDeInvestimentos.controller;
 
 import com.deigo.SimuladorDeInvestimentos.controller.DTO.CriarInvestimentosDTO;
+import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.Investimentos;
 import com.deigo.SimuladorDeInvestimentos.service.InvestimentosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,7 +44,7 @@ public class InvestimentosController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> atualizarInvestimentoPorId (@RequestParam UUID id, CriarInvestimentosDTO criarInvestimentosDTO) {
+    public ResponseEntity<Void> atualizarInvestimentoPorId (@RequestParam UUID id, @RequestBody CriarInvestimentosDTO criarInvestimentosDTO) {
         investimentosService.atualizarInvestimentos(id, criarInvestimentosDTO);
         return ResponseEntity.ok().build();
     }
@@ -57,5 +59,10 @@ public class InvestimentosController {
         response.put("mensagem", "Rendimento calculado com sucesso!");
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/todos")
+    public ResponseEntity<List<Investimentos>> listarTodos() {
+        return ResponseEntity.ok(investimentosService.listarTodosInvestimentos());
     }
 }

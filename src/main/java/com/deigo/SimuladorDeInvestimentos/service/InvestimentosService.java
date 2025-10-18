@@ -7,9 +7,11 @@ import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.Poupanca;
 import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.TesouroDireto;
 import com.deigo.SimuladorDeInvestimentos.infrastructure.repository.InvestimentosRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -35,22 +37,30 @@ public class InvestimentosService {
     }
 
     //DELETE
-    public void deletarInvestimentoPeloId (UUID id) {
+    public void deletarInvestimentoPeloId (@RequestParam UUID id) {
         investimentosRepository.deleteById(id);
     }
 
     //PUT
     public UUID atualizarInvestimentos(UUID id, CriarInvestimentosDTO dto) {
-        investimentosRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Id não encontrado"));
+        Investimentos investimento = investimentosRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Investimento não encontrado"));
 
-        Investimentos entity = criarEntidade(dto);
-        investimentosRepository.saveAndFlush(entity);
+        // Atualiza só o que veio no DTO
+        if (dto.nome() != null) investimento.setNome(dto.nome());
+        if (dto.valorInicial() != null) investimento.setValorInicial(dto.valorInicial());
+        if (dto.taxaJuros() != null) investimento.setTaxaJuros(dto.taxaJuros());
+        if (dto.periodo() != null) investimento.setPeriodo(dto.periodo());
 
-        return entity.getId();
+        investimentosRepository.saveAndFlush(investimento);
+        return investimento.getId();
     }
 
     private Investimentos criarEntidade(CriarInvestimentosDTO dto) {
+        if (dto.tipo() == null || dto.tipo().isBlank()) {
+            throw new IllegalArgumentException("O tipo de investimento é obrigatório.");
+        }
+
         return switch (dto.tipo().toUpperCase()) {
             case "CDB" -> CDB.builder()
                     .nome(dto.nome())
@@ -87,6 +97,12 @@ public class InvestimentosService {
         return investimento.getId();
     }
 
+    //GET
+    public List<Investimentos> listarTodosInvestimentos() {
+        return investimentosRepository.findAll();
+    }
+
+    //GET
     public BigDecimal calcularRendimento(UUID investimentoId) {
         Object investimento = investimentosRepository.findById(investimentoId).orElseThrow(
                 () -> new RuntimeException("Id não encontrado"));
