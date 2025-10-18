@@ -20,7 +20,8 @@ import java.util.UUID;
 public abstract class Investimentos {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "BINARY(16)")
+    @GeneratedValue
     private UUID id;
 
     @Column(name = "nome")

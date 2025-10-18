@@ -1,9 +1,9 @@
 package com.deigo.SimuladorDeInvestimentos.controller;
 
 import com.deigo.SimuladorDeInvestimentos.controller.DTO.CriarInvestimentosDTO;
-import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.Investimentos;
 import com.deigo.SimuladorDeInvestimentos.service.InvestimentosService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +20,14 @@ public class InvestimentosController {
     private final InvestimentosService investimentosService;
 
     @PostMapping
-    public ResponseEntity<Void> salvarInvestimento (@RequestBody Investimentos investimentos) {
-        investimentosService.salvaInvestimento(investimentos);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Map<String, Object>> criar(@RequestBody CriarInvestimentosDTO dto) {
+        UUID id = investimentosService.criarInvestimento(dto);
+
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("id", id);
+        resposta.put("mensagem", "Investimento criado com sucesso!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
     @GetMapping

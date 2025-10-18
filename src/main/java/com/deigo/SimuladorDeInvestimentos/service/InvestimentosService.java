@@ -23,14 +23,15 @@ public class InvestimentosService {
     }
 
     //POST
-    public void salvaInvestimento(Investimentos investimentos) {
+    public void salvaInvestimento(CriarInvestimentosDTO criarInvestimentosDTO) {
+        Investimentos investimentos = criarEntidade(criarInvestimentosDTO);
         investimentosRepository.saveAndFlush(investimentos);
     }
 
     //GET
     public Object buscarInvestimentosPeloId(UUID id) {
-        return investimentosRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Id não encontrado"));
+        return investimentosRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Investimento não encontrado"));
     }
 
     //DELETE
@@ -39,49 +40,51 @@ public class InvestimentosService {
     }
 
     //PUT
-    public UUID atualizarInvestimentos(UUID id, CriarInvestimentosDTO criarInvestimentosDTO) {
-        Object investimentosEntity = investimentosRepository.findById(id).orElseThrow(
+    public UUID atualizarInvestimentos(UUID id, CriarInvestimentosDTO dto) {
+        investimentosRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Id não encontrado"));
 
-        Investimentos entity = switch (criarInvestimentosDTO.tipo().toUpperCase()) {
-            case "CDB" -> {
-                var cdb = CDB.builder()
-                        .nome(criarInvestimentosDTO.nome())
-                        .valorInicial(criarInvestimentosDTO.valorInicial())
-                        .taxaJuros(criarInvestimentosDTO.taxaJuros())
-                        .periodo(criarInvestimentosDTO.periodo())
-                        .cdiPercentual(0.9)
-                        .build();
-                yield cdb;
-            }
+        Investimentos entity = criarEntidade(dto);
+        investimentosRepository.saveAndFlush(entity);
 
-            case "POUPANCA" -> {
-                var poupanca = Poupanca.builder()
-                        .nome(criarInvestimentosDTO.nome())
-                        .valorInicial(criarInvestimentosDTO.valorInicial())
-                        .taxaJuros(criarInvestimentosDTO.taxaJuros())
-                        .periodo(criarInvestimentosDTO.periodo())
-                        .selicAnual(13.0)
-                        .build();
-                yield poupanca;
-            }
+        return entity.getId();
+    }
 
-            case "TESOURODIRETO" -> {
-                var tesouro = TesouroDireto.builder()
-                        .nome(criarInvestimentosDTO.nome())
-                        .valorInicial(criarInvestimentosDTO.valorInicial())
-                        .taxaJuros(criarInvestimentosDTO.taxaJuros())
-                        .periodo(criarInvestimentosDTO.periodo())
-                        .taxaPrefixada(11.0)
-                        .ipca(6.0)
-                        .build();
-                yield tesouro;
-            }
+    private Investimentos criarEntidade(CriarInvestimentosDTO dto) {
+        return switch (dto.tipo().toUpperCase()) {
+            case "CDB" -> CDB.builder()
+                    .nome(dto.nome())
+                    .valorInicial(dto.valorInicial())
+                    .taxaJuros(dto.taxaJuros())
+                    .periodo(dto.periodo())
+                    .cdiPercentual(0.9)
+                    .build();
+
+            case "POUPANCA" -> Poupanca.builder()
+                    .nome(dto.nome())
+                    .valorInicial(dto.valorInicial())
+                    .taxaJuros(dto.taxaJuros())
+                    .periodo(dto.periodo())
+                    .selicAnual(13.0)
+                    .build();
+
+            case "TESOURODIRETO" -> TesouroDireto.builder()
+                    .nome(dto.nome())
+                    .valorInicial(dto.valorInicial())
+                    .taxaJuros(dto.taxaJuros())
+                    .periodo(dto.periodo())
+                    .taxaPrefixada(11.0)
+                    .ipca(6.0)
+                    .build();
 
             default -> throw new IllegalArgumentException("Tipo de investimento inválido");
         };
-        investimentosRepository.saveAndFlush(entity);
-        return entity.getId();
+    }
+
+    public UUID criarInvestimento(CriarInvestimentosDTO criarInvestimentosDTO) {
+        var investimento = criarEntidade(criarInvestimentosDTO);
+        investimentosRepository.saveAndFlush(investimento);
+        return investimento.getId();
     }
 
     public BigDecimal calcularRendimento(UUID investimentoId) {
