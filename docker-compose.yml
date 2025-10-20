@@ -9,3 +9,20 @@ services:
       - 'MYSQL_USER=myuser'
     ports:
       - '3307:3306'
+
+  simulador_investimentos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 'api_investimentos'
+    ports:
+      - '8080:8082'
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mydatabase'
+      - 'SPRING_DATASOURCE_USERNAME=myuser'
+      - 'SPRING_DATASOURCE_PASSWORD=secret'
+      - 'SPRING_JPA_HIBERNATE_DDL_AUTO=update'
+      - 'SPRING_JPA_SHOW_SQL=true'
