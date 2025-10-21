@@ -32,19 +32,21 @@ public class InvestimentosController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
-    @GetMapping
-    public ResponseEntity<Object> buscarInvestimentoPorId (@RequestParam UUID id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> buscarInvestimentoPorId (@PathVariable UUID id) {
         return ResponseEntity.ok(investimentosService.buscarInvestimentosPeloId(id));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deletarInvestimentoPorId (@RequestParam UUID id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarInvestimentoPorId (@PathVariable UUID id) {
         investimentosService.deletarInvestimentoPeloId(id);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping
-    public ResponseEntity<Void> atualizarInvestimentoPorId (@RequestParam UUID id, @RequestBody CriarInvestimentosDTO criarInvestimentosDTO) {
+    public record SucessoDTO(UUID id, String mensagem) {}
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> atualizarInvestimentoPorId (@PathVariable UUID id, @RequestBody CriarInvestimentosDTO criarInvestimentosDTO) {
         investimentosService.atualizarInvestimentos(id, criarInvestimentosDTO);
         return ResponseEntity.ok().build();
     }

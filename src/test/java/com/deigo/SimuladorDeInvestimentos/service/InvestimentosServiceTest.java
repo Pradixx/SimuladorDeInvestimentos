@@ -61,7 +61,7 @@ class InvestimentosServiceTest {
     void deveBuscarInvestimentoPorId() {
         when(investimentosRepository.findById(id)).thenReturn(Optional.of(investimento));
 
-        Investimentos resultado = investimentosService.buscarInvestimentosPeloId(id);
+        Investimentos resultado = (Investimentos) investimentosService.buscarInvestimentosPeloId(id);
 
         assertEquals("CDB Banco XP", resultado.getNome());
         verify(investimentosRepository, times(1)).findById(id);
@@ -89,22 +89,20 @@ class InvestimentosServiceTest {
     void deveAtualizarSomenteCamposNaoNulos() {
         when(investimentosRepository.findById(id)).thenReturn(Optional.of(investimento));
 
-        investimento.setValorInicial(2000.0);
-        investimento.setPeriodo(24);
-
         CriarInvestimentosDTO dto = new CriarInvestimentosDTO(
                 "CDB",
                 "CDB SANTANDER",
-                2000.0,
+                null,
                 24.0,
-                24
+                null
         );
 
         investimentosService.atualizarInvestimentos(id, dto);
         verify(investimentosRepository, times(1)).saveAndFlush(investimento);
         assertEquals("CDB SANTANDER", investimento.getNome());
-        assertEquals(2000.0, investimento.getValorInicial());
+        assertEquals(1000.0, investimento.getValorInicial());
         assertEquals(24.0, investimento.getTaxaJuros());
+        assertEquals(1, investimento.getPeriodo());
     }
 }
 
