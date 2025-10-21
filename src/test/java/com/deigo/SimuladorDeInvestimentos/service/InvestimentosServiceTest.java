@@ -39,7 +39,7 @@ class InvestimentosServiceTest {
                 .nome("CDB Banco XP")
                 .valorInicial(1000.0)
                 .taxaJuros(10.0)
-                .periodo(12)
+                .periodo(1)
                 .cdiPercentual(0.9)
                 .build();
     }
@@ -81,7 +81,8 @@ class InvestimentosServiceTest {
         BigDecimal rendimento = investimentosService.calcularRendimento(id);
 
         assertNotNull(rendimento);
-        assertEquals(new BigDecimal("144.30"), rendimento);
+        BigDecimal expected = new BigDecimal("90.00");
+        assertEquals(expected, rendimento);
     }
 
     @Test

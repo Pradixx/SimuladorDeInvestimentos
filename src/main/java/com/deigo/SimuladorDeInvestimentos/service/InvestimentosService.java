@@ -110,7 +110,10 @@ public class InvestimentosService {
         double rendimento;
 
         if (investimento instanceof CDB cdb) {
-            double taxaEfetiva = cdb.getTaxaJuros() * cdb.getCdiPercentual();
+            double taxaDecimal = cdb.getTaxaJuros() / 100.0;
+
+            double taxaEfetiva = taxaDecimal * cdb.getCdiPercentual();
+
             double montante = cdb.getValorInicial() * Math.pow(1 + taxaEfetiva, cdb.getPeriodo());
             rendimento = montante - cdb.getValorInicial();
 
@@ -120,13 +123,13 @@ public class InvestimentosService {
             rendimento = montante - poupanca.getValorInicial();
 
         } else if (investimento instanceof TesouroDireto tesouro) {
-                double taxaEfetiva = (tesouro.getTaxaPrefixada() + tesouro.getIpca()) / 100;
-                double montante = tesouro.getValorInicial() * Math.pow(1 + taxaEfetiva, tesouro.getPeriodo());
-                rendimento = montante - tesouro.getValorInicial();
+            double taxaEfetiva = (tesouro.getTaxaPrefixada() + tesouro.getIpca()) / 100;
+            double montante = tesouro.getValorInicial() * Math.pow(1 + taxaEfetiva, tesouro.getPeriodo());
+            rendimento = montante - tesouro.getValorInicial();
 
-            } else {
-                throw new IllegalArgumentException("Tipo de investimento desconhecido");
-            }
+        } else {
+            throw new IllegalArgumentException("Tipo de investimento desconhecido");
+        }
 
         return BigDecimal.valueOf(rendimento).setScale(2, RoundingMode.HALF_UP);
     }
