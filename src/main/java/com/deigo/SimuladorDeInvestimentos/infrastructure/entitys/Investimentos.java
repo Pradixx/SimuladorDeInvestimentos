@@ -36,5 +36,8 @@ public abstract class Investimentos {
     @Column(name = "periodo")
     private int periodo;
 
+    @Column(name = "tipo")
+    private String tipo;
+
     public abstract BigDecimal calcularRendimento ();
 }

@@ -31,7 +31,7 @@ public class InvestimentosService {
     }
 
     //GET
-    public Object buscarInvestimentosPeloId(UUID id) {
+    public Investimentos buscarInvestimentosPeloId(UUID id) {
         return investimentosRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Investimento não encontrado"));
     }
