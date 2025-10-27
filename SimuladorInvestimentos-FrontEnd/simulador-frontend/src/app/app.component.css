@@ -1,0 +1,112 @@
+:root {
+  --cor-fundo-principal: #1a1a2e; 
+  --cor-texto-principal: #ffffff; 
+  --cor-destaque: #e94560; 
+  --cor-card-fundo: #2e3b5e;
+  --cor-botao: #0f3460;
+  --cor-botao-hover: #4e8cff; 
+  --cor-borda: #4f8a8b; 
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--cor-fundo-principal);
+  color: var(--cor-texto-principal);
+  font-family: sans-serif;
+}
+
+.simulador-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.autor {
+  display: block;
+  text-align: left;
+  font-size: 0.8em;
+  color: var(--cor-borda);
+  margin-bottom: 5px;
+}
+
+.title {
+  color: var(--cor-destaque);
+  font-size: 2.5em;
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--cor-destaque);
+}
+
+.section-title {
+  color: var(--cor-destaque);
+  font-size: 1.8em;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: var(--cor-card-fundo);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border-left: 5px solid var(--cor-borda);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  color: var(--cor-destaque);
+  margin-top: 0;
+  font-size: 1.2em;
+}
+
+.card p {
+  font-size: 0.9em;
+  line-height: 1.4;
+  color: #c0c0c0;
+}
+
+.dashboard-section {
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.action-button {
+  background-color: transparent;
+  color: var(--cor-destaque);
+  border: 2px solid var(--cor-destaque);
+  padding: 15px 30px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: var(--cor-destaque);
+  color: var(--cor-fundo-principal);
+}
