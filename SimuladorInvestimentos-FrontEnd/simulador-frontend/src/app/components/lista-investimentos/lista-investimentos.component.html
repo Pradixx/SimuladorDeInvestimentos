@@ -1,0 +1,44 @@
+<div class="card-lista">
+    <h2>Meus Investimentos</h2>
+    
+    <div *ngIf="statusMensagem" class="status-message">{{ statusMensagem }}</div>
+
+    <div *ngIf="investimentos.length > 0; else noData">
+        <div class="investimento-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID (User: {{ userId }})</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Valor Inicial</th>
+                        <th>Taxa (%)</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let inv of investimentos">
+                        <td class="id-col">{{ inv.id }}</td>
+                        <td>{{ inv.nome }}</td>
+                        <td>{{ inv.tipo }}</td>
+                        <td>{{ inv.valorInicial | currency:'BRL':'symbol':'1.2-2' }}</td>
+                        <td>{{ inv.taxa | number:'1.2-2' }}</td>
+                        <td>{{ inv.data | date:'shortDate' }}</td>
+                        <td>
+                            <button (click)="deletarInvestimento(inv.id)" class="btn-delete" title="Deletar Investimento">
+                                🗑️
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <ng-template #noData>
+        <p class="no-data-message">Nenhum investimento registrado. Comece a registrar um novo!</p>
+    </ng-template>
+
+    <p class="auth-status">Status de Autenticação: {{ authReady ? 'Pronto' : 'Aguardando' }}</p>
+</div>
