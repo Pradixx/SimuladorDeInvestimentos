@@ -1,1 +1,97 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap' );
+
+:root {
+    --cor-primaria: #ff6b6b; /* Vermelho/Rosa do design */
+    --cor-secundaria: #483d8b; /* Roxo Escuro */
+    --cor-fundo: #1c1c3a; /* Fundo Principal */
+    --cor-texto-claro: #ffffff;
+    --cor-texto-secundario: #cccccc;
+    --cor-borda-card: rgba(255, 107, 107, 0.5);
+    --cor-fundo-card: rgba(0, 0, 0, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, var(--cor-fundo) 0%, #2a2a53 100%);
+    min-height: 100vh;
+    color: var(--cor-texto-claro);
+}
+
+/* Estilos de Títulos */
+h1, h2, h3, h4 {
+    color: var(--cor-primaria);
+    margin-bottom: 1rem;
+}
+
+/* Estilos de Botões */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* Estilos de Formulário */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--cor-borda-card);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--cor-texto-claro);
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 5px var(--cor-primaria);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 300;
+    color: var(--cor-texto-secundario);
+}
+
+.card {
+    background-color: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda-card);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.mensagem-sucesso {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #4CAF50;
+}
+
+.mensagem-erro {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #F44336;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #F44336;
+}
