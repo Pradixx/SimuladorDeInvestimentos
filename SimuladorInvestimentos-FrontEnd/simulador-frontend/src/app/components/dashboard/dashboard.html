@@ -1,0 +1,39 @@
+<div class="dashboard-container">
+    <header class="dashboard-header">
+        <button class="btn-voltar" (click)="voltarParaHome()">← Voltar</button>
+        <h1>Dashboard</h1>
+    </header>
+
+    <div class="abas-container">
+        <div class="abas">
+            <button
+                [class.aba-ativa]="abaAtiva === 'registrar'"
+                (click)="selecionarAba('registrar')"
+            >
+                Registrar Investimento
+            </button>
+            <button
+                [class.aba-ativa]="abaAtiva === 'calcular'"
+                (click)="selecionarAba('calcular')"
+            >
+                Calcular Rendimento
+            </button>
+            <button
+                [class.aba-ativa]="abaAtiva === 'listar'"
+                (click)="selecionarAba('listar')"
+            >
+                Todos Investimentos
+            </button>
+        </div>
+    </div>
+
+    <div class="conteudo-aba card">
+        @if (abaAtiva === 'registrar') {
+            <app-registrar-investimento />
+        } @else if (abaAtiva === 'calcular') {
+            <app-calcular-rendimento />
+        } @else if (abaAtiva === 'listar') {
+            <app-listar-investimentos />
+        }
+    </div>
+</div>
