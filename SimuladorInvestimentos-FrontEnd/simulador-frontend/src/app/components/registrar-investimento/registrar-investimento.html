@@ -1,0 +1,57 @@
+<div class="registrar-container">
+    <h2>Registrar Novo Investimento</h2>
+
+    @if (mensagem) {
+        <div [class]="tipoMensagem === 'sucesso' ? 'mensagem-sucesso' : 'mensagem-erro'">
+            {{ mensagem }}
+        </div>
+    }
+
+    <form [formGroup]="formInvestimento" (ngSubmit)="registrar()">
+        <div class="form-group">
+            <label for="tipo">Tipo de Investimento</label>
+            <select id="tipo" formControlName="tipo">
+                @for (tipo of tiposInvestimento; track tipo) {
+                    <option [value]="tipo">{{ tipo }}</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="nome">Nome do Investimento</label>
+            <input id="nome" type="text" formControlName="nome" placeholder="Ex: Meu CDB">
+            @if (formInvestimento.get('nome')?.invalid && formInvestimento.get('nome')?.touched) {
+                <div class="erro-validacao">Nome é obrigatório.</div>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="valorInicial">Valor Inicial (R$)</label>
+            <input id="valorInicial" type="number" formControlName="valorInicial" placeholder="Ex: 1000.00">
+            @if (formInvestimento.get('valorInicial')?.invalid && formInvestimento.get('valorInicial')?.touched) {
+                <div class="erro-validacao">Valor Inicial deve ser um número positivo.</div>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="taxaJuros">Taxa de Juros (% ao ano)</label>
+            <input id="taxaJuros" type="number" formControlName="taxaJuros" placeholder="Ex: 10.5">
+            @if (formInvestimento.get('taxaJuros')?.invalid && formInvestimento.get('taxaJuros')?.touched) {
+                <div class="erro-validacao">Taxa de Juros deve ser um número não negativo.</div>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="periodo">Período (meses)</label>
+            <input id="periodo" type="number" formControlName="periodo" placeholder="Ex: 12">
+            @if (formInvestimento.get('periodo')?.invalid && formInvestimento.get('periodo')?.touched) {
+                <div class="erro-validacao">Período deve ser um número inteiro positivo.</div>
+            }
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" [disabled]="formInvestimento.invalid" class="btn-registrar">Registrar</button>
+            <button type="button" (click)="limpar()" class="btn-limpar">Limpar</button>
+        </div>
+    </form>
+</div>
