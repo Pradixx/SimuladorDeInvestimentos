@@ -2,62 +2,56 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface CriarInvestimentoPayload {
-  nome: string;
+const API_URL = 'http://localhost:8080/investimentos';
+
+export interface CriarInvestimentoDTO {
   tipo: string;
+  nome: string;
   valorInicial: number;
-  aporteMensal: number;
-  taxaAnual: number;
-  prazoMeses: number;
+  taxaJuros: number;
+  periodo: number;
 }
 
 export interface Investimento {
-  id: string; 
+  id: string;
   nome: string;
-  tipo: string;
   valorInicial: number;
-  aporteMensal: number;
-  taxaAnual: number;
-  prazoMeses: number;
+  taxaJuros: number;
+  periodo: number;
+  tipo: string;
 }
 
-export interface ApiResponse {
+export interface RespostaCriacao {
   id: string;
-  mensagem?: string;
-  rendimento?: number;
+  mensagem: string;
+}
+
+export interface RespostaRendimento {
+  id: string;
+  rendimento: number;
+  mensagem: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class InvestimentoService {
-  private apiUrl = 'http://localhost:8080/investimentos';
+export class InvestimentosService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient ) { }
 
-  criarInvestimento(payload: CriarInvestimentoPayload): Observable<ApiResponse> {
-    console.log('Enviando dados para o Java:', payload);
-    return this.http.post<ApiResponse>(this.apiUrl, payload);
+  criarInvestimento(dto: CriarInvestimentoDTO): Observable<RespostaCriacao> {
+    return this.http.post<RespostaCriacao>(API_URL, dto );
   }
 
   listarTodos(): Observable<Investimento[]> {
-    return this.http.get<Investimento[]>(`${this.apiUrl}/todos`);
+    return this.http.get<Investimento[]>(`${API_URL}/todos` );
   }
 
-  buscarPorId(id: string): Observable<Investimento> {
-    return this.http.get<Investimento>(`${this.apiUrl}/${id}`);
+  calcularRendimento(id: string): Observable<RespostaRendimento> {
+    return this.http.get<RespostaRendimento>(`${API_URL}/${id}/rendimento` );
   }
 
-  atualizarInvestimento(id: string, payload: CriarInvestimentoPayload): Observable<void> {
-    
-    return this.http.put<void>(`${this.apiUrl}/${id}`, payload);
-  }
-
-  deletarPorId(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
-  calcularRendimento(id: string): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(`${this.apiUrl}/${id}/rendimento`);
+  deletarInvestimento(id: string): Observable<void> {
+    return this.http.delete<void>(`${API_URL}/${id}` );
   }
 }
