@@ -35,7 +35,7 @@
 
         <div class="form-group">
             <label for="taxaJuros">Taxa de Juros (% ao ano)</label>
-            <input id="taxaJuros" type="number" formControlName="taxaJuros" placeholder="Ex: 10.5">
+            <input id="taxaJuros" type="number" formControlName="taxaJuros" placeholder="Ex: 10.5 (Se for Poupanca, nao importa o valor, pois a selic é fixa)">
             @if (formInvestimento.get('taxaJuros')?.invalid && formInvestimento.get('taxaJuros')?.touched) {
                 <div class="erro-validacao">Taxa de Juros deve ser um número não negativo.</div>
             }

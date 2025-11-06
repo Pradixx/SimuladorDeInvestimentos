@@ -47,3 +47,24 @@
 .btn-limpar:hover {
     background-color: #5a4f9f;
 }
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--cor-primaria);
+  border-radius: 6px;
+  background-color: #2a244a; 
+  color: #ffffff;
+  font-size: 1rem;
+  outline: none;
+}
+
+select:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+}
+
+option {
+  background-color: #2a244a;
+  color: #ffffff;
+}
