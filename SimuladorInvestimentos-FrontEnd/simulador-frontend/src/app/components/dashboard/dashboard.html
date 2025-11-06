@@ -28,12 +28,6 @@
     </div>
 
     <div class="conteudo-aba card">
-        @if (abaAtiva === 'registrar') {
-            <app-registrar-investimento />
-        } @else if (abaAtiva === 'calcular') {
-            <app-calcular-rendimento />
-        } @else if (abaAtiva === 'listar') {
-            <app-listar-investimentos />
-        }
+        <ng-template #outlet></ng-template>
     </div>
 </div>
