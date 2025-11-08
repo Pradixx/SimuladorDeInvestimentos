@@ -16,19 +16,51 @@ export class RegistrarInvestimento implements OnInit {
   mensagem = '';
   tipoMensagem: 'sucesso' | 'erro' = 'sucesso';
 
-  constructor(
-    private fb: FormBuilder,
-    private investimentosService: InvestimentosService
-  ) { }
+  constructor(private fb: FormBuilder, private investimentosService: InvestimentosService) {}
 
   ngOnInit(): void {
+    this.inicializarFormulario();
+  }
+
+  inicializarFormulario() {
     this.formInvestimento = this.fb.group({
       tipo: [this.tiposInvestimento[0], Validators.required],
       nome: ['', Validators.required],
-      valorInicial: ['', [Validators.required, Validators.min(0.01)]],
-      taxaJuros: ['', [Validators.required, Validators.min(0)]],
-      periodo: ['', [Validators.required, Validators.min(1)]]
+      valorInicial: [null, [Validators.required, Validators.min(0.01)]],
+      taxaJuros: [null], 
+      cdiPercentual: [null],
+      selicAnual: [null],
+      taxaPrefixada: [null],
+      ipca: [null], 
+      periodo: [null, [Validators.required, Validators.min(1)]] 
     });
+
+    this.onTipoChange();
+  }
+
+  onTipoChange() {
+    const tipo = this.formInvestimento.get('tipo')?.value;
+
+    const camposEspecificos = [
+      'taxaJuros', 'cdiPercentual', 'selicAnual', 'taxaPrefixada', 'ipca'
+    ];
+
+    camposEspecificos.forEach(campo => {
+        this.formInvestimento.get(campo)?.clearValidators();
+        this.formInvestimento.get(campo)?.setValue(null);
+    });
+
+    if (tipo === 'CDB') {
+      this.formInvestimento.get('taxaJuros')?.setValidators([Validators.required, Validators.min(0)]);
+      this.formInvestimento.get('cdiPercentual')?.setValidators([Validators.required, Validators.min(0)]);
+    } else if (tipo === 'Poupanca') {
+      this.formInvestimento.get('selicAnual')?.setValidators([Validators.required, Validators.min(0)]);
+    } else if (tipo === 'TesouroDireto') {
+      this.formInvestimento.get('taxaPrefixada')?.setValidators([Validators.required, Validators.min(0)]);
+      this.formInvestimento.get('ipca')?.setValidators([Validators.required, Validators.min(0)]);
+    }
+
+    this.formInvestimento.updateValueAndValidity();
   }
 
   registrar() {
@@ -55,13 +87,7 @@ export class RegistrarInvestimento implements OnInit {
   }
 
   limpar() {
-    this.formInvestimento.reset({
-      tipo: this.tiposInvestimento[0],
-      nome: '',
-      valorInicial: '',
-      taxaJuros: '',
-      periodo: ''
-    });
+    this.inicializarFormulario();
     this.mensagem = '';
   }
 }
