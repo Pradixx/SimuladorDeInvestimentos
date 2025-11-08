@@ -10,6 +10,11 @@ export interface CriarInvestimentoDTO {
   valorInicial: number;
   taxaJuros: number;
   periodo: number;
+
+  cdiPercentual?: number; 
+  selicAnual?: number; 
+  taxaPrefixada?: number; 
+  ipca?: number;
 }
 
 export interface Investimento {
@@ -19,6 +24,13 @@ export interface Investimento {
   taxaJuros: number;
   periodo: number;
   tipo: string;
+
+  tipo_investimento: string;
+
+  cdiPercentual?: number;
+  selicAnual?: number;
+  taxaPrefixada?: number;
+  ipca?: number;
 }
 
 export interface RespostaCriacao {
