@@ -28,7 +28,10 @@
                         <th>Nome</th>
                         <th>Tipo</th>
                         <th>Valor Inicial (R$)</th>
-                        <th>Taxa Juros (%)</th>
+                        <th>Taxa / Prefixada (%)</th>
+                        <th>CDI Percentual (%)</th>
+                        <th>SELIC Anual (%)</th>
+                        <th>IPCA (%)</th>
                         <th>Período (meses)</th>
                         <th>Ações</th>
                     </tr>
@@ -41,9 +44,44 @@
                                 <button (click)="copiarId(inv.id)" class="btn-copiar">Copiar ID</button>
                             </td>
                             <td>{{ inv.nome }}</td>
-                            <td>{{ inv.tipo }}</td>
+                            <td>
+                                <span style="color: yellow; font-weight: bold;">{{ inv.tipo_investimento }}</span> 
+                            </td>
                             <td>{{ inv.valorInicial | number:'1.2-2' }}</td>
-                            <td>{{ inv.taxaJuros | number:'1.2-2' }}</td>
+                            
+                            <td>
+                                @if (inv.tipo_investimento === 'TESOURODIRETO') {
+                                    {{ inv.taxaPrefixada | number:'1.2-2' }}
+                                } @else if (inv.tipo_investimento === 'CDB') {
+                                    {{ inv.taxaJuros | number:'1.2-2' }}
+                                } @else {
+                                    -
+                                }
+                            </td>
+
+                            <td>
+                                @if (inv.tipo_investimento === 'CDB') {
+                                    {{ inv.cdiPercentual | number:'1.2-2' }}
+                                } @else {
+                                    -
+                                }
+                            </td>
+
+                            <td>
+                                @if (inv.tipo_investimento === 'POUPANCA') {
+                                    {{ inv.selicAnual | number:'1.2-2' }}
+                                } @else {
+                                    -
+                                }
+                            </td>
+
+                            <td>
+                                @if (inv.tipo_investimento === 'TESOURODIRETO') {
+                                    {{ inv.ipca | number:'1.2-2' }}
+                                } @else {
+                                    -
+                                }
+                            </td>
                             <td>{{ inv.periodo }}</td>
                             <td>
                                 <button (click)="deletarInvestimento(inv.id)" class="btn-deletar">Deletar</button>
