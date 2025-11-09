@@ -19,6 +19,9 @@ import java.math.RoundingMode;
 
 public class TesouroDireto extends Investimentos {
 
+    @Column(name = "taxa_juros")
+    private double taxaJuros;
+
     @Column(name = "taxa_prefixada")
     private double taxaPrefixada;
 

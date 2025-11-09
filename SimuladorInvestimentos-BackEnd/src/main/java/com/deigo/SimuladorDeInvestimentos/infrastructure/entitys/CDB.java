@@ -17,6 +17,9 @@ import java.math.RoundingMode;
 
 public class CDB extends Investimentos {
 
+    @Column(name = "taxa_juros")
+    private double taxaJuros;
+
     @Column(name = "cdi_percentual")
     private double cdiPercentual;
 
