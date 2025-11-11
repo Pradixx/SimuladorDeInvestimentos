@@ -1,7 +1,8 @@
 package com.deigo.SimuladorDeInvestimentos.repository;
 
+import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.CDB;
 import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.Investimentos;
-import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.TestInvestimento;
+import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.TesouroDireto;
 import com.deigo.SimuladorDeInvestimentos.infrastructure.repository.InvestimentosRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,33 +22,39 @@ class InvestimentosRepositoryTest {
     private InvestimentosRepository investimentosRepository;
 
     @Test
-    void deveSalvarEBuscarInvestimento() {
-        TestInvestimento investimento = new TestInvestimento();
-        investimento.setTipo("CDB");
-        investimento.setNome("CDB Banco XP");
-        investimento.setValorInicial(1500.0);
-        investimento.setTaxaJuros(10.0);
-        investimento.setPeriodo(12);
+    void deveSalvarEBuscarInvestimentoCDB() {
+        CDB investimentoCDB = CDB.builder()
+                .nome("CDB Banco XP")
+                .valorInicial(1500.0)
+                .taxaJuros(10.0)
+                .cdiPercentual(105.0)
+                .periodo(12)
+                .build();
 
-        Investimentos salvo = investimentosRepository.save(investimento);
+        Investimentos salvo = investimentosRepository.save(investimentoCDB);
         assertNotNull(salvo.getId());
 
         Optional<Investimentos> encontrado = investimentosRepository.findById(salvo.getId());
         assertTrue(encontrado.isPresent());
+
+        assertTrue(encontrado.get() instanceof CDB);
         assertEquals("CDB Banco XP", encontrado.get().getNome());
+
+        assertEquals(105.0, ((CDB) encontrado.get()).getCdiPercentual());
     }
 
     @Test
-    void deveDeletarInvestimento() {
-        TestInvestimento investimento = new TestInvestimento();
-        investimento.setTipo("TesouroDireto");
-        investimento.setNome("Tesouro Direto Selic");
-        investimento.setValorInicial(2000.0);
-        investimento.setTaxaJuros(5.0);
-        investimento.setPeriodo(6);
+    void deveDeletarInvestimentoTesouroDireto() {
+        TesouroDireto investimentoTesouro = TesouroDireto.builder()
+                .nome("Tesouro Direto Selic")
+                .valorInicial(2000.0)
+                .taxaPrefixada(5.0)
+                .ipca(3.5)
+                .periodo(6)
+                .build();
 
 
-        Investimentos salvo = investimentosRepository.save(investimento);
+        Investimentos salvo = investimentosRepository.save(investimentoTesouro);
         UUID id = salvo.getId();
 
         investimentosRepository.deleteById(id);

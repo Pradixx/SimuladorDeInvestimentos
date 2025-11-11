@@ -1,7 +1,7 @@
 package com.deigo.SimuladorDeInvestimentos.controller;
 
 import com.deigo.SimuladorDeInvestimentos.controller.DTO.CriarInvestimentosDTO;
-import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.Investimentos;
+import com.deigo.SimuladorDeInvestimentos.infrastructure.entitys.CDB;
 import com.deigo.SimuladorDeInvestimentos.service.InvestimentosService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class InvestimentosControllerTest {
     void deveCriarInvestimento() throws Exception {
         UUID id = UUID.randomUUID();
         CriarInvestimentosDTO dto = new CriarInvestimentosDTO(
-                "TesouroDireto", "Tesouro Direto Selic", 2000.0, 5.0, 6
+                "TesouroDireto", "Tesouro Direto Selic", 2000.0, 5.0, 6, null, 5.0, 0.0, 6.0
         );
 
         Mockito.when(investimentosService.criarInvestimento(any(CriarInvestimentosDTO.class))).thenReturn(id);
@@ -53,14 +53,10 @@ class InvestimentosControllerTest {
     @Test
     void deveBuscarInvestimentoPorId() throws Exception {
         UUID id = UUID.randomUUID();
-        Investimentos investimento = new Investimentos() {
-            @Override
-            public BigDecimal calcularRendimento() {
-                return null;
-            }
-        };
-        investimento.setId(id);
-        investimento.setNome("Tesouro Direto");
+        CDB investimento = CDB.builder()
+                .id(id)
+                .nome("Tesouro Direto")
+                .build();
 
         Mockito.when(investimentosService.buscarInvestimentosPeloId(id)).thenReturn(investimento);
 
@@ -84,7 +80,18 @@ class InvestimentosControllerTest {
     @Test
     void deveAtualizarInvestimento() throws Exception {
         UUID id = UUID.randomUUID();
-        CriarInvestimentosDTO dto = new CriarInvestimentosDTO("TesouroDireto", "Tesouro IPCA", 1000.0, 4.5, 12);
+
+        CriarInvestimentosDTO dto = new CriarInvestimentosDTO(
+                "TESOURODIRETO",
+                "Tesouro IPCA Atualizado",
+                1000.0,
+                null,
+                null,
+                null,
+                4.5,
+                1.5,
+                12.0
+        );
 
         Mockito.when(investimentosService.atualizarInvestimentos(eq(id), any(CriarInvestimentosDTO.class))).thenReturn(id);
 
@@ -109,19 +116,13 @@ class InvestimentosControllerTest {
 
     @Test
     void deveListarTodosInvestimentos() throws Exception {
-        Investimentos investimento = new Investimentos() {
-            @Override
-            public BigDecimal calcularRendimento() {
-                return null;
-            }
-        };
-        investimento.setNome("Tesouro Direto");
+        CDB investimento = CDB.builder().nome("CDB Teste").build();
 
         Mockito.when(investimentosService.listarTodosInvestimentos())
                 .thenReturn(Collections.singletonList(investimento));
 
         mockMvc.perform(get("/investimentos/todos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].nome").value("Tesouro Direto"));
+                .andExpect(jsonPath("$[0].nome").value("CDB Teste"));
     }
 }
