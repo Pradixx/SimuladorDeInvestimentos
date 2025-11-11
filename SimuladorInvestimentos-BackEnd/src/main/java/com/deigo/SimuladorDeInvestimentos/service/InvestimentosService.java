@@ -46,10 +46,8 @@ public class InvestimentosService {
         Investimentos investimento = investimentosRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Investimento não encontrado"));
 
-        // Atualiza só o que veio no DTO
         if (dto.nome() != null) investimento.setNome(dto.nome());
         if (dto.valorInicial() != null) investimento.setValorInicial(dto.valorInicial());
-        if (dto.taxaJuros() != null) investimento.setTaxaJuros(dto.taxaJuros());
         if (dto.periodo() != null) investimento.setPeriodo(dto.periodo());
 
         investimentosRepository.saveAndFlush(investimento);
@@ -67,24 +65,22 @@ public class InvestimentosService {
                     .valorInicial(dto.valorInicial())
                     .taxaJuros(dto.taxaJuros())
                     .periodo(dto.periodo())
-                    .cdiPercentual(0.9)
+                    .cdiPercentual(dto.cdiPercentual())
                     .build();
 
             case "POUPANCA" -> Poupanca.builder()
                     .nome(dto.nome())
                     .valorInicial(dto.valorInicial())
-                    .taxaJuros(dto.taxaJuros())
                     .periodo(dto.periodo())
-                    .selicAnual(13.0)
+                    .selicAnual(dto.selicAnual())
                     .build();
 
             case "TESOURODIRETO" -> TesouroDireto.builder()
                     .nome(dto.nome())
                     .valorInicial(dto.valorInicial())
-                    .taxaJuros(dto.taxaJuros())
                     .periodo(dto.periodo())
-                    .taxaPrefixada(11.0)
-                    .ipca(6.0)
+                    .taxaPrefixada(dto.taxaPrefixada())
+                    .ipca(dto.ipca())
                     .build();
 
             default -> throw new IllegalArgumentException("Tipo de investimento inválido");
@@ -110,21 +106,21 @@ public class InvestimentosService {
         double rendimento;
 
         if (investimento instanceof CDB cdb) {
-            double taxaDecimal = cdb.getTaxaJuros() / 100.0;
-
-            double taxaEfetiva = taxaDecimal * cdb.getCdiPercentual();
-
-            double montante = cdb.getValorInicial() * Math.pow(1 + taxaEfetiva, cdb.getPeriodo());
+            double taxaAnualEfetivaDecimal = (cdb.getTaxaJuros() / 100.0) * (cdb.getCdiPercentual() / 100.0);
+            double taxaMensal = Math.pow(1 + taxaAnualEfetivaDecimal, 1.0 / 12.0) - 1.0;
+            double montante = cdb.getValorInicial() * Math.pow(1 + taxaMensal, cdb.getPeriodo());
             rendimento = montante - cdb.getValorInicial();
 
         } else if (investimento instanceof Poupanca poupanca) {
-            double taxaEfetiva = poupanca.getSelicAnual() / 12 / 100;
-            double montante = poupanca.getValorInicial() * Math.pow(1 + taxaEfetiva, poupanca.getPeriodo());
+            double taxaAnualDecimal = poupanca.getSelicAnual() / 100.0;
+            double taxaMensal = Math.pow(1 + taxaAnualDecimal, 1.0 / 12.0) - 1.0;
+            double montante = poupanca.getValorInicial() * Math.pow(1 + taxaMensal, poupanca.getPeriodo());
             rendimento = montante - poupanca.getValorInicial();
 
         } else if (investimento instanceof TesouroDireto tesouro) {
-            double taxaEfetiva = (tesouro.getTaxaPrefixada() + tesouro.getIpca()) / 100;
-            double montante = tesouro.getValorInicial() * Math.pow(1 + taxaEfetiva, tesouro.getPeriodo());
+            double taxaAnualDecimal = (tesouro.getTaxaPrefixada() + tesouro.getIpca()) / 100.0;
+            double taxaMensal = Math.pow(1 + taxaAnualDecimal, 1.0 / 12.0) - 1.0;
+            double montante = tesouro.getValorInicial() * Math.pow(1 + taxaMensal, tesouro.getPeriodo());
             rendimento = montante - tesouro.getValorInicial();
 
         } else {
