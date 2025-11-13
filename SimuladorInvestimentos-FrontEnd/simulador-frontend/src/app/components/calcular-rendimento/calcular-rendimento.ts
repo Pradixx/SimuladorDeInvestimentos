@@ -14,7 +14,9 @@ import {
   LinearScale,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  registerables,
+  Filler 
 } from 'chart.js';
 
 Chart.register(
@@ -58,7 +60,7 @@ export class CalcularRendimento implements OnInit {
           borderWidth: 2,
           fill: true,
           tension: 0.4,
-          pointBackgroundColor: '#ff6b6b',
+          pointBackgroundColor: '#ff6b6c',
           pointBorderColor: '#ffffff',
           pointRadius: 5,
           pointHoverRadius: 7
@@ -106,7 +108,10 @@ export class CalcularRendimento implements OnInit {
     }
   };
 
-  constructor(private investimentosService: InvestimentosService) {}
+  constructor(private investimentosService: InvestimentosService) {
+    Chart.register(...registerables); 
+    Chart.register(Filler);
+  }
 
   ngOnInit() {}
 
