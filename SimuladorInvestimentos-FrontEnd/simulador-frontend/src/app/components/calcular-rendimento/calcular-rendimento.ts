@@ -60,7 +60,7 @@ export class CalcularRendimento implements OnInit {
           borderWidth: 2,
           fill: true,
           tension: 0.4,
-          pointBackgroundColor: '#ff6b6c',
+          pointBackgroundColor: '#ff6b6b',
           pointBorderColor: '#ffffff',
           pointRadius: 5,
           pointHoverRadius: 7
