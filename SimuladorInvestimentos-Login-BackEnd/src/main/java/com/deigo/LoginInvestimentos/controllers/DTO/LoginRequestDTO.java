@@ -1,4 +1,4 @@
 package com.deigo.LoginInvestimentos.controllers.DTO;
 
-public class LoginRequestDTO {
+public record LoginRequestDTO (String email, String password) {
 }
