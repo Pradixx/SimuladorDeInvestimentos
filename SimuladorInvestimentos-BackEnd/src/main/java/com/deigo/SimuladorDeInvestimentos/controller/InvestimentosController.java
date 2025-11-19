@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/simulador")
+@RequestMapping("/api/simulador")
 @RequiredArgsConstructor
 public class InvestimentosController {
 
