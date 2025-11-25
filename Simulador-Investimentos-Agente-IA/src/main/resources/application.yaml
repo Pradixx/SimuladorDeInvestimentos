@@ -1,0 +1,11 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: agente-primo-rico-api
+  data:
+    mongodb:
+      host: mongodb-IA
+      port: 27017
+      database: primo_rico_conversas
