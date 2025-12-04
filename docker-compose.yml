@@ -1,0 +1,86 @@
+services:
+
+# BANCOS DE DADOS
+  mysql:
+    container_name: 'mysqlInvestimentos'
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=mydatabase'
+      - 'MYSQL_PASSWORD=secret'
+      - 'MYSQL_ROOT_PASSWORD=verysecret'
+      - 'MYSQL_USER=myuser'
+    ports:
+      - '3307:3306'
+
+  mongodb:
+    image: 'mongo:latest'
+    container_name: 'mongodb-IA'
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+# APLICAÇÕES BACKEND
+  simulador_investimentos:
+    build:
+      context: ./Simulador-Investimentos-Back-End
+      dockerfile: Dockerfile
+    container_name: 'api_simulador'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mydatabase'
+      - 'SPRING_DATASOURCE_USERNAME=myuser'
+      - 'SPRING_DATASOURCE_PASSWORD=secret'
+      - 'SPRING_JPA_HIBERNATE_DDL_AUTO=update'
+      - 'SPRING_JPA_SHOW_SQL=true'
+
+  agente_ia:
+    build:
+      context: ./Simulador-Investimentos-Agente-IA
+      dockerfile: Dockerfile
+    container_name: agente-primo-rico-ia
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - SPRING_DATA_MONGODB_DATABASE=primo_rico_conversas
+      - IA_API_KEY=SUA_CHAVE_AQUI_SE_FOR_USAR_VARIAVEL_DE_AMBIENTE
+    depends_on:
+      - mongodb
+    restart: on-failure
+
+  login_backend:
+    build:
+      context: ./Simulador-Investimentos-Login-Back-End
+      dockerfile: Dockerfile
+    container_name: 'api_login_simulador'
+    ports:
+      - '8081:8081'
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mydatabase_login'
+      - 'SPRING_DATASOURCE_USERNAME=myuser'
+      - 'SPRING_DATASOURCE_PASSWORD=secret'
+
+# APLICAÇÕES FRONTEND
+  frontend:
+    build:
+      context: ./Simulador-Investimentos-Front-End
+      dockerfile: Dockerfile
+    container_name: 'simulador_frontend'
+    ports:
+      - "4200:80"
+    depends_on:
+      - simulador_investimentos
+      - login_backend
+      - agente_ia
+
+volumes:
+  mongo_data:
