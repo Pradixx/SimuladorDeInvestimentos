@@ -1,0 +1,43 @@
+<div class="calcular-container">
+    <h2>Calcular Rendimento</h2>
+
+    @if (mensagem) {
+        <div [class]="tipoMensagem === 'sucesso' ? 'mensagem-sucesso' : 'mensagem-erro'">
+            {{ mensagem }}
+        </div>
+    }
+
+    <div class="form-group">
+        <label for="investimentoId">ID do Investimento</label>
+        <input id="investimentoId" type="text" [(ngModel)]="investimentoId" placeholder="Cole o UUID do investimento aqui">
+    </div>
+
+    <div class="form-actions">
+        <button (click)="calcularRendimento()" [disabled]="!investimentoId.trim() || carregando" class="btn-calcular">
+            @if (carregando) {
+                Carregando...
+            } @else {
+                Calcular
+            }
+        </button>
+        <button (click)="limpar()" class="btn-limpar">Limpar</button>
+    </div>
+
+    @if (rendimento !== null) {
+        <div class="resultado-rendimento card">
+            <h3>Rendimento Total Calculado:</h3>
+            <p class="valor-rendimento">R$ {{ rendimento | number:'1.2-2' }}</p>
+        </div>
+    }
+
+    @if (mostrarGrafico) {
+        <div class="grafico-container card">
+            <h3>Gráfico de Rendimento (Simulado)</h3>
+            <canvas baseChart
+                [data]="chartConfig.data"
+                [options]="chartConfig.options"
+                [type]="chartConfig.type">
+            </canvas>
+        </div>
+    }
+</div>

@@ -1,0 +1,107 @@
+.listar-container {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.listar-container h2 {
+    color: var(--cor-primaria);
+    margin-bottom: 30px;
+}
+
+.loading {
+    font-size: 1.2rem;
+    color: var(--cor-texto-secundario);
+}
+
+.nenhum-registro {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    border-color: #5a4f9f;
+}
+
+.nenhum-registro h3 {
+    color: var(--cor-texto-claro);
+    margin-bottom: 10px;
+}
+
+.nenhum-registro p {
+    color: var(--cor-texto-secundario);
+}
+
+.tabela-responsiva {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--cor-texto-claro);
+}
+
+th {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-primaria);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.id-cell {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.id-text {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--cor-texto-secundario);
+}
+
+.btn-copiar {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border-radius: 5px;
+}
+
+.btn-copiar:hover {
+    background-color: #66bb6a;
+}
+
+.btn-deletar {
+    background-color: #F44336;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border-radius: 5px;
+}
+
+.btn-deletar:hover {
+    background-color: #e57373;
+}
+
+.btn-recarregar {
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto-claro);
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+}
